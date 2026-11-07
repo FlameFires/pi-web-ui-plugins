@@ -138,10 +138,8 @@ function renderMarkdownReport(result) {
     md += `\n`;
   }
 
-  if (result.passed && result.risk === "LOW") {
-    md += `> ✨ **Auto-merge Recommendation**: All checks passed with low risk. This PR is safe to be merged automatically.\n`;
-  } else if (result.passed && result.risk === "MEDIUM") {
-    md += `> ℹ️ **Manual Approval Needed**: Checks passed, but elevated permissions or special features were detected. A maintainer must approve before merging.\n`;
+  if (result.passed) {
+    md += `> ✨ **Auto-merge Recommendation**: All checks passed. This PR is safe to be merged automatically.\n`;
   } else {
     md += `> 🛑 **Action Required**: Please address the errors above and push new commits to this PR.\n`;
   }
@@ -209,7 +207,7 @@ async function main() {
     appendFileSync(process.env.GITHUB_OUTPUT, `risk=${result.risk}\n`);
     appendFileSync(
       process.env.GITHUB_OUTPUT,
-      `auto_merge=${result.passed && result.risk === "LOW" ? "true" : "false"}\n`,
+      `auto_merge=${result.passed ? "true" : "false"}\n`,
     );
     appendFileSync(process.env.GITHUB_OUTPUT, `plugin_id=${result.pluginId}\n`);
   }

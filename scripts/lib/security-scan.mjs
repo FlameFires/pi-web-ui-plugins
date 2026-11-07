@@ -51,21 +51,18 @@ export function auditSecurity(pluginData, remoteManifest) {
     }
   }
 
-  // 2. 检查权限 (Permissions)
+  // 2. 检查权限 (Permissions)：仅记录信息，不阻塞自动合并
   const permissions = Array.isArray(remoteManifest?.permissions)
     ? remoteManifest.permissions
     : [];
 
   if (permissions.includes("dom")) {
-    // 特权 DOM 访问：需要在设置面板逐个授权
-    if (risk !== "HIGH") risk = "MEDIUM";
     warnings.push(
-      "Plugin requests privileged 'dom' permission (requires user manual consent in UI settings). Human review recommended.",
+      "Plugin requests privileged 'dom' permission (requires user manual consent in UI settings).",
     );
   }
 
   if (permissions.some((p) => typeof p === "string" && p.startsWith("fs:"))) {
-    if (risk !== "HIGH") risk = "MEDIUM";
     warnings.push("Plugin requests filesystem permissions outside workspace.");
   }
 

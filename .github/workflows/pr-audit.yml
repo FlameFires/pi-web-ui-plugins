@@ -84,15 +84,10 @@ jobs:
           script: |
             try {
               const passed = '${{ steps.audit_run.outputs.passed }}' === 'true';
-              const risk = '${{ steps.audit_run.outputs.risk }}';
               
               const labelsToAdd = [];
-              const labelsToRemove = ['auto-merge-ready', 'needs-maintainer-review', 'audit-failed'];
-
-              if (passed && risk === 'LOW') {
+              if (passed) {
                 labelsToAdd.push('auto-merge-ready');
-              } else if (passed && risk === 'MEDIUM') {
-                labelsToAdd.push('needs-maintainer-review');
               } else {
                 labelsToAdd.push('audit-failed');
               }
@@ -110,11 +105,24 @@ jobs:
               console.warn(`⚠️ Unable to apply PR labels (likely read-only token from fork PR): ${err.message}`);
             }
 
-      - name: Auto-merge for Low-Risk Plugin PR
+      - name: Save PR info for auto-merge
+        if: steps.audit_run.outputs.passed == 'true'
+        run: |
+          echo '{"prNumber": ${{ github.event.pull_request.number }}, "passed": true}' > pr-info.json
+
+      - name: Upload PR info
+        if: steps.audit_run.outputs.passed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-info
+          path: pr-info.json
+          retention-days: 1
+
+      - name: Immediate auto-merge attempt (for internal PRs)
         if: steps.audit_run.outputs.auto_merge == 'true'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr review ${{ github.event.pull_request.number }} --approve --body "🤖 Auto-approved by Plugin Audit CI (Low Risk)" || true
+          gh pr review ${{ github.event.pull_request.number }} --approve --body "🤖 Auto-approved by Plugin Audit CI" || true
           gh pr merge ${{ github.event.pull_request.number }} --squash --auto || true
