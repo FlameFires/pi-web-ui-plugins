@@ -48,10 +48,19 @@ async function fetchRawFile(owner, repo, branch, path, token) {
   }
 
   try {
-    const res = await fetch(url, {
+    let res = await fetch(url, {
       headers,
       signal: AbortSignal.timeout(10_000),
     });
+    // 如果带 token 鉴权失败，回退无 token 请求（公开仓库 raw 内容无需鉴权，避免 token 不匹配被 GitHub 拦截）
+    if (!res.ok && token) {
+      res = await fetch(url, {
+        headers: {
+          "User-Agent": "pi-web-ui-plugin-audit-bot",
+        },
+        signal: AbortSignal.timeout(10_000),
+      });
+    }
     if (!res.ok) return null;
     return await res.text();
   } catch {
