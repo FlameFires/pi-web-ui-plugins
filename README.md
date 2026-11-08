@@ -132,6 +132,7 @@ Fork 本仓库 -> 添加 plugins/<id>/plugin.json -> 发起 Pull Request -> CI �
    {
      "id": "my-plugin",
      "name": "插件显示名称",
+     "nameEn": "English display name (optional)",
      "source": "github用户名/插件仓库名",
      "author": "github用户名",
      "description": "这里填写插件的中文功能描述（必填，不少于 5 个字）",

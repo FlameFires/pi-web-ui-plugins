@@ -1,0 +1,12 @@
+{
+  "id": "md-chat",
+  "name": "聊天归档",
+  "nameEn": "Chat Archive",
+  "source": "engharat/pi-web-ui-md-chat",
+  "author": "engharat",
+  "description": "本地持久聊天归档：保留压缩前原文、按分支浏览历史、问题跳转与 Markdown 文件查看；不调用模型，不修改原会话。",
+  "descriptionEn": "Persistent local chat archive preserving pre-compaction originals, with branch history, question navigation and a Markdown file viewer. No model calls or native-session edits.",
+  "icon": "📄",
+  "homepage": "https://github.com/engharat/pi-web-ui-md-chat",
+  "tags": ["archive", "history", "markdown"]
+}

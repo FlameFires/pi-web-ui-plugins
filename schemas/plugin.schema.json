@@ -38,6 +38,12 @@
       "maxLength": 300,
       "description": "Chinese description of the plugin"
     },
+    "nameEn": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50,
+      "description": "Optional English display name shown in English UI"
+    },
     "descriptionEn": {
       "type": "string",
       "maxLength": 300,

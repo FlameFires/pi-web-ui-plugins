@@ -25,6 +25,7 @@ function buildCatalog() {
       const entry = {
         id: data.id,
         name: data.name || data.id,
+        ...(data.nameEn ? { nameEn: data.nameEn } : {}),
         source: data.source,
         ...(data.description ? { description: data.description } : {}),
         ...(data.descriptionEn ? { descriptionEn: data.descriptionEn } : {}),

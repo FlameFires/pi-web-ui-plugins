@@ -28,6 +28,7 @@
    {
      "id": "my-plugin",
      "name": "My Plugin Display Name",
+     "nameEn": "My Plugin (English UI name, optional)",
      "source": "username/my-plugin-repo",
      "author": "username",
      "description": "这是插件的中文功能描述，不少于 5 个字。",
